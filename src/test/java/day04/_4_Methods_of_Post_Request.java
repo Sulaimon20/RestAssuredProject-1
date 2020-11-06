@@ -7,27 +7,26 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pojo.Spartan;
 
 import java.io.File;
 import java.util.*;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+//   POST with: 1) String; 2) External File; 3)Map; 4)
 
 
-
-public class PostRequestTest {
+public class _4_Methods_of_Post_Request {
 
     @BeforeAll
     public static void init(){
-
-        RestAssured.baseURI = "http://54.158.178.13" ;
+        RestAssured.baseURI = "http://3.226.201.68" ;
         RestAssured.port = 8000 ;
         RestAssured.basePath = "/api" ;
-
     }
 
-    @DisplayName("Post request with String as body")
+    @DisplayName("Post request with String")
     @Test
     public void testPostWithStringBody(){
 
@@ -41,7 +40,6 @@ public class PostRequestTest {
                 "  \"gender\": \"Female\",\n" +
                 "  \"phone\": 6234567890\n" +
                 "}";
-
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
@@ -57,7 +55,7 @@ public class PostRequestTest {
 
     }
 
-    @DisplayName("Posting with external json file")
+    @DisplayName("Post with external File")
     @Test
     public void testPostWithExternalFile(){
 
@@ -78,7 +76,7 @@ public class PostRequestTest {
 
     }
 
-    @DisplayName("Posting with Map object as body")
+    @DisplayName("Post with Map object")
     @Test
     public void testPostWithMapAsBody(){
 
@@ -109,8 +107,21 @@ public class PostRequestTest {
 
     }
 
-
-
-
-
+    @DisplayName("Post request with POJO")
+    @Test
+    public void testPostBodyWithPojo() {
+        Spartan sp1 = new Spartan("William", "Male",2024569513 ) ;
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(sp1).
+          when()
+                .post("/spartans").
+          then()
+                .log().all()
+                .statusCode(201)
+        .assertThat().body("data.name", is("William"))
+        .assertThat().body("data.gender", is("Male"))
+        .assertThat().body("data.phone", is(2024569513));
+    }
 }

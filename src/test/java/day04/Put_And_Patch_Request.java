@@ -13,15 +13,13 @@ import java.util.*;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-public class PutAndPatchRequestTest {
+public class Put_And_Patch_Request {
 
     @BeforeAll
     public static void init() {
-
-        RestAssured.baseURI = "http://100.25.192.231";
+        RestAssured.baseURI = "http://3.226.201.68";
         RestAssured.port = 8000;
         RestAssured.basePath = "/api";
-
     }
 
     @DisplayName("Put Request body as a Map")
@@ -35,10 +33,9 @@ public class PutAndPatchRequestTest {
         // we can make another get request right after this and assert the body
         // getting random name
         String randomName = new Faker().name().firstName();
-
         Map<String,Object> updatedBody = new LinkedHashMap<>();
         updatedBody.put("name", randomName) ;
-        updatedBody.put("gender", "Male") ;
+      updatedBody.put("gender", "Male") ;
         updatedBody.put("phone",8745124312L ) ;
 
         given()
@@ -57,13 +54,8 @@ public class PutAndPatchRequestTest {
                 .get("/spartans/{id}",142).
         then()
                 .statusCode(200)
-                .body("name" , is(randomName ) )
-                ;
-
-
-
+                .body("name" , is(randomName ) );
     }
-
 
     @DisplayName("Put Request body as a POJO")
     @Test
@@ -93,8 +85,7 @@ public class PutAndPatchRequestTest {
         ;
 
     }
-    // difference between put and patch
-    // in this app
+    // difference between put and patch in this app
     // put will completely renew entire json that that location with new data
     // patch will partially update the date
 
@@ -104,7 +95,7 @@ public class PutAndPatchRequestTest {
 
         // ONLY UPDATE THE NAME WITH FAKER
         String randomName = new Faker().name().firstName();
-//        String patchBody = "\"name\" : \" "+ randomName + "\" " ;
+//      String patchBody = "\"name\" : \" "+ randomName + "\" " ;
         Map<String, Object> patchBodyMap = new HashMap<>();
         patchBodyMap.put("name" , randomName) ;
 
@@ -118,11 +109,8 @@ public class PutAndPatchRequestTest {
                 .log().all()
                 .statusCode(204) ;
         // MAKE ANOTHER GET REQUEST HERE TO MAKE SURE IT WORKED
-
     }
 
-    // CREATE A METHOD THAT POST A RANDOM SPARTAN TO THE SERVER
-    // AND RETURN THE ID OF THAT SPARTAN , SO YOU CAN ALWAYS USE A DATA THAT EXISTS
 
 
 

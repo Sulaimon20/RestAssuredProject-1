@@ -22,7 +22,8 @@ What do we have in the request and response :
     - It must have the body 
     - It must specify the content type of the body
     - Usually you can only add one resource per request
-    - Usually `201` Created for successful response , it can also be `200` if the api dev decided to do so (just like we saw in library /login endpoint)
+    - Usually `201` Created for successful response , it can also be `200` if the api dev decided 
+      to do so (just like we saw in library /login endpoint)
   
   - **PUT**
     - Used to update the resouces in the server
@@ -44,7 +45,8 @@ What do we have in the request and response :
   - Metadata about the request, basically providing more information along with the request
   - Common headers : 
     - `Content Type` header : to specify what kind of data you are sending to the server 
-    - `Accept` header : to specify what kind of data format you want to get in the response like `json` or `xml`
+    - `Accept` header : to specify what kind of data format you want to get in the response like 
+    `json` or `xml`
     - `Authorization` header : used to provide the `Bearer Token` in many APIs
     - Some custom headers provided in the API according to the doc like `X-LIBRARY-Token`
   
@@ -79,7 +81,8 @@ What do we have in the request and response :
 ### Response 
 
 - #### Status code 
-  - A number to indicate the status of your response , list of all status codes can be found [here](https://httpstatuses.com/) 
+  - A number to indicate the status of your response , list of all status codes can be 
+    found [here](https://httpstatuses.com/) 
  
   - `2xx` for success 
     - `200 OK`
@@ -91,7 +94,7 @@ What do we have in the request and response :
     - `401 Unauthorized`
       - Did not provide correct credentials, we do not know who you are.
     - `403 Forbidden`
-      - Do not have permission to take this action, we know who you are but you do not have perission. 
+      - Do not have permission to take this action, we know who you are but you do not have permission. 
     - `404 Not Found`
       - The resource you are looking for does not exist
     - `405 Method Not Allowed`
@@ -106,15 +109,18 @@ What do we have in the request and response :
   
     - `415 Unsupported`
       - Server is expecting to get the body in certain content type , but the client sent unsupported content type
-      - For example : `POST /api/spartans` only accept `json` as content type. if you forget to add the content type, it will automatically assume you are sending `plain/text` and we get this error.
+      - For example : `POST /api/spartans` only accept `json` as content type. if you forget to add the content type, 
+        it will automatically assume you are sending `plain/text` and we get this error.
       - Or if you specify the content type incorrectly , this status code will be returned. 
   - `5xx` for server side error
     - `500 Internal server error`
       - The server encountered an unexpected condition that prevented it from fulfilling the request. 
       - For example : 
-        - in `PUT /api/spartans/{id}` request, unlike the `POST `, backend code does not have any error handling for incorrect body, so server does not know what to do with it and throw `500` error. 
+        - in `PUT /api/spartans/{id}` request, unlike the `POST `, backend code does not have any error handling for 
+        incorrect body, so server does not know what to do with it and throw `500` error. 
     - `503 Service Unavailable`
-      - The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.
+      - The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, 
+        which will likely be alleviated after some delay.
 
 - #### Body  (Payload)
   - The actual resource we got from the server 
@@ -137,46 +143,52 @@ What do we have in the request and response :
   * Things you can do according to who you are, The permission attached to your identity.
 
 ### Few ways of making authorized request
-  - Basic Auth 
+  - 1.Basic Auth 
     - providing username and password along with each request.
     - For example 
       - The spartan app with basic auth 
       - if username and password not provided we will get 401
       - Github API also support basic auth 
-      - It also supports providing token instead of password by generating the personal token by logging into your account and clicking on this [link](https://github.com/settings/tokens)
+      - It also supports providing token instead of password by generating the personal token by logging into 
+        your account and clicking on this [link](https://github.com/settings/tokens)
   
-  - API Keys
+  - 2.API Keys
     - A token provided by the api vendor , to identify who you are and track your usage and authorize the requests 
     - Usually , it's required to provide the token either in query parameter or header (Strictly according to the doc) 4
   
-  - Bearer token
-    - A token either provided or generated by making a request to certain endpoint and added to a header called `Authorization` 
+  - 3.Bearer token
+    - A token either provided or generated by making a request to certain endpoint and added to a header called 
+      `Authorization` 
     - The value start with `Bearer `+ your long token. 
     - The common token type for this known as `JWT(Json Web Token)`
-    - It has information about the identity and authority which can be decoded. The token usually start with `ey......long token`
+    - It has information about the identity and authority which can be decoded. The token usually start with 
+      `ey......long token`
     - Example :  `Authorization` : `Bearer ey......long token`
-  - oAuth2 
+  - 4.oAuth2 
     - A much more secure way of authorizing your request 
     - The flow is similar to `Login with facabook,google`
     - Eventually the token still get added to the `Authorization` header.
 
 >How did you authorize your request in your application ? and what happen if you don't?
 
-* One of the internal project I worked on use basic auth , and we just provide the username , password for each request to make authorize request
+* One of the internal project I worked on use basic auth , and we just provide the username , 
+  password for each request to make authorize request
 * Another project I worked on have 2 options 
     * provide the api-key into the query parameter 
     * provide the api-key in custom header 
       * For example : New API you did , [docs here](https://newsapi.org/docs/authentication)
-* Most of the projects I worked on use `Bearer ` token with `JWT` in `Authorizaiton` header.  I have endpoint that I can use to generate this token and pass it to the each requests in my test. 
+* Most of the projects I worked on use `Bearer ` token with `JWT` in `Authorizaiton` header.  I have endpoint that 
+  I can use to generate this token and pass it to the each requests in my test. 
 
-* When the credentails or the token is not provided --> `401`
-* When the crenentials or the token does not have permission --> `403`
+* When the credentials or the token is not provided --> `401`
+* When the credentials or the token does not have permission --> `403`
 
 ### BookIT API oAuth2 example 
 BookIT api use oAuth2 for authorization , generating the access token is much simplified and the token does not expire. 
 
 #### Task 
-   1. Send a request to `GET https://cybertek-reservation-api-qa.herokuapp.com/sign` Endpoint with below 2 query parameters 
+   1. Send a request to `GET https://cybertek-reservation-api-qa.herokuapp.com/sign` 
+      Endpoint with below 2 query parameters 
       * email=jalabaster7f@drupal.org
       * password=terimapam 
       * Save the token that generated 
@@ -198,16 +210,16 @@ String accessToken =
 
 ```java
 // code for using the token in 2 different ways : 
-  given()
-//                .header("Authorization", "Bearer "+ accessToken)
-            .auth().oauth2(accessToken)
-            .log().all().
-  when()
-          .get("/api/rooms").
-  then()
-          .log().all()
-          .statusCode(200)
-          .contentType(ContentType.JSON)
+//          given()
+//                  .header("Authorization", "Bearer "+ accessToken)
+//                  .auth().oauth2(accessToken)
+//              .log().all().
+//          when()
+//                  .get("/api/rooms").
+//          then()
+//              .log().all()
+//                  .statusCode(200)
+//                  .contentType(ContentType.JSON)
 ```
 ### How to transfer data between requests in Postman
 
@@ -237,12 +249,15 @@ pm.globals.set("my_secret_token",  responseJson.accessToken );
 Here is the collection : [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/07efb5040d033f07788f)
 
 
-Cookie in rest request , just like on the website , used to store some common information about where the request originated. for example , while you shop online , once you view certain items , next time to go to the website it will always suggest similar item beacuse it can access the cookie that contain those information. 
+Cookie in rest request, just like on the website , used to store some common information about where the request 
+originated. for example , while you shop online , once you view certain items , next time to go to the website 
+it will always suggest similar item beacuse it can access the cookie that contain those information. 
 
 #### Postman 
-* We have a button called cookie to give us a way to add cookie to certain domain. by providing the key-value pair (optionally expration date)
+* We have a button called cookie to give us a way to add cookie to certain domain. by providing the key-value pair 
+(optionally expration date)
 * Once added , any request sent to the same domain , can access that cookie 
-* You can also programmitically access the cookie in the test tab
+* You can also programmatically access the cookie in the test tab
   
 > This code is checking we have 2 cookies as below 
 >   B18 : AWESOME   AND  Motto : Hold your horse
@@ -263,42 +278,27 @@ pm.test('the "Motto" cookie has correct value', function () {
   > Try it out with this request : https://postman-echo.com/cookies
   > Try to add 2 cookies in the requests by following the doc. 
 
-
-
-
-
-
-
-
-
-
-
-
-
------ 
+-- 
 
 ## Soap Request : 
-Here is the example provided by postman in the [doc](https://learning.postman.com/docs/sending-requests/supported-api-frameworks/making-soap-requests/) 
+Here is the example provided by postman in the 
+[doc](https://learning.postman.com/docs/sending-requests/supported-api-frameworks/making-soap-requests/) 
 
-You can see more example by looking at this [doc](https://documenter.getpostman.com/view/8854915/Szf26WHn?version=latest&_ga=2.111743751.265151840.1599750425-735093615.1589812348)
+You can see more example by looking at this 
+[doc](https://documenter.getpostman.com/view/8854915/Szf26WHn?version=latest&_ga=2.111743751.265151840.1599750425-735093615.1589812348)
 
-Or you can directly import the collection with all the post request by clicking on this button : [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/3bf2daab4832964def44)
-
-
-
+Or you can directly import the collection with all the post request by clicking on this button : 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/3bf2daab4832964def44)
 
     SOAP :  Simple Object Access Protocol 
 * It has strict rule on how to send request and response. 
-
 * Soap Request use `XML` format to send and receive response 
-
 * Only method allowed in SOAP is `POST`
 * The content type is always xml 
 * Body is enclosed in envelop like structure for example :
 
 Sample Post request to turn number into word 
 * `POST https://www.dataaccess.com/webservicesserver/NumberConversion.wso` 
-
 * `Header` : `text/xml; charset=utf-8`
 * Body : 
 ```xml 
@@ -329,7 +329,8 @@ Sample Post request to turn number into word
 * RestAssured   -- `Java client library`
 * SoapUI        -- `Desktop client tool`
 
-A lot of API documentation provide curl command example run the request and Postman can easily import curl command without you manually typing the whole part of the request. 
+A lot of API documentation provide curl command example run the request and Postman can easily import curl 
+command without you manually typing the whole part of the request. 
 
 ### How to easily import curl command as Postman Request
 ![How_to_import_curl_command_to_postman_request](https://user-images.githubusercontent.com/59104509/92767551-3b475b00-f365-11ea-916a-c0de1e24d0c5.gif)
@@ -346,7 +347,8 @@ What if I have excel file ?
 
 Convert to csv and use the csv file that supported.
 
-> **As long as the column name in csv , or the field name in json match your variable name in Postman , it will just use that from the external file.** 
+> **As long as the column name in csv , or the field name in json match your variable name in Postman , 
+>** it will just use that from the external file.** 
 
 * Sample csv file for the Spartan Data driven test
 ```
